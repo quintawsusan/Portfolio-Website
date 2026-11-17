@@ -1,0 +1,94 @@
+
+.contact {
+  padding-top: 90px;
+  padding-bottom: 60px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 40px;
+  align-items: center;
+}
+
+.contact-eyebrow {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.contact h2 {
+  font-size: clamp(36px, 4.8vw, 60px);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+  margin: 14px 0 20px;
+  text-wrap: balance;
+}
+
+.contact .lede {
+  margin-bottom: 24px;
+}
+
+.rows {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 22px;
+  max-width: 520px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--fg) 3%, transparent);
+}
+
+.row .k {
+  font-size: 9.5px;
+  color: var(--muted);
+}
+
+.row .v {
+  font-size: 14.5px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+a.v:hover {
+  color: var(--accent-text);
+}
+
+.copy {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: transparent;
+  cursor: pointer;
+}
+
+.bubble-line {
+  display: block;
+}
+
+.bubble-line + .bubble-line {
+  margin-top: 4px;
+}
+
+@media (max-width: 860px) {
+  .contact-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 30px;
+  }
+
+  .row {
+    grid-template-columns: 78px minmax(0, 1fr) auto;
+    padding: 12px;
+  }
+}

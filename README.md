@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Quinta Susan – Portfolio
 
-## Getting Started
+Next.js (App Router, plain JavaScript/JSX) with a separate CSS file for each component.
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build && npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Needs Node 20 or newer. Fonts (Plus Jakarta Sans, JetBrains Mono) load through `next/font/google`, so the first build needs internet.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Where things are
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| File | What it does |
+| --- | --- |
+| `data/content.js` | **All the words.** Edit this to change text, skills, projects, links. |
+| `app/layout.jsx` | Fonts, page title, light/dark theme script |
+| `app/globals.css` | Colours (design tokens), reset, buttons |
+| `app/page.jsx` + `app/page.css` | The page and its footer |
+| `components/Nav.jsx` + `.css` | Floating pill nav and theme toggle |
+| `components/Hero.jsx` + `.css` | Hero section |
+| `components/Clive.jsx` + `.css` | The mascot, speech bubbles, mascot stage |
+| `components/Book.jsx` + `.css` | Scroll-driven book: cover, page turns, controls |
+| `components/BookPages.jsx` | The ten pages of the book |
+| `components/Contact.jsx` + `.css` | Contact section |
+| `lib/bookNav.js` | Lets the nav and hero jump to a page in the book |
 
-## Learn More
+## Change the colours
 
-To learn more about Next.js, take a look at the following resources:
+Edit the variables at the top of `app/globals.css`. Dark values are in `:root`, light values are in the two light blocks below it.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Below 900px wide (or with "reduce motion" on) the book becomes a stack of page cards instead of animating.
+- The "Illustrative graphic" drawings on the projects page are placeholders. Swap them in `BookPages.jsx` for real screenshots when you have them.

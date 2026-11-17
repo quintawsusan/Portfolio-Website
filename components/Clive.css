@@ -1,0 +1,166 @@
+.mascot-stage {
+  position: relative;
+  width: min(100%, 520px);
+  aspect-ratio: 1 / 1.05;
+  margin-inline: auto;
+  display: grid;
+  place-items: center;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.blob.a {
+  width: 74%;
+  aspect-ratio: 1;
+  left: 2%;
+  top: 14%;
+  background: var(--blob-a);
+}
+
+.blob.b {
+  width: 66%;
+  height: 76%;
+  right: 0;
+  top: 10%;
+  background: var(--blob-b);
+  border-radius: 50% 50% 50% 50% / 46% 46% 54% 54%;
+  opacity: 0.95;
+}
+
+.clive {
+  position: relative;
+  z-index: 2;
+  width: 64%;
+  animation: clive-bob 4.2s ease-in-out infinite;
+}
+
+.clive-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+@keyframes clive-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+.clive-svg .eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: clive-blink 5.5s infinite;
+}
+
+@keyframes clive-blink {
+  0%,
+  93%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.08);
+  }
+}
+
+.clive-svg .ant {
+  animation: clive-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes clive-glow {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.clive.wave .arm-r {
+  transform-box: fill-box;
+  transform-origin: 40% 80%;
+  animation: clive-wave 2.6s ease-in-out infinite;
+}
+
+@keyframes clive-wave {
+  0%,
+  60%,
+  100% {
+    transform: rotate(0);
+  }
+  70% {
+    transform: rotate(-24deg);
+  }
+  80% {
+    transform: rotate(8deg);
+  }
+  90% {
+    transform: rotate(-20deg);
+  }
+}
+
+.bubble {
+  position: absolute;
+  z-index: 3;
+  max-width: 190px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--bubble-bg);
+  color: var(--bubble-fg);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  left: 26px;
+  bottom: -6px;
+  width: 12px;
+  height: 12px;
+  background: inherit;
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+
+.mascot-stage .bubble {
+  right: 6%;
+  top: 2%;
+}
+
+.caption {
+  position: absolute;
+  bottom: -2%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 10.5px;
+  color: var(--muted);
+  z-index: 3;
+}
+
+@media (max-width: 860px) {
+  .mascot-stage {
+    width: min(100%, 380px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clive,
+  .clive-svg .eyes,
+  .clive-svg .ant,
+  .clive.wave .arm-r {
+    animation: none;
+  }
+}

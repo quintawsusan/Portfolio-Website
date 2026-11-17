@@ -1,0 +1,183 @@
+/* Design tokens, reset and shared primitives.
+   Palette comes from the Flock image: navy #061138, magenta #F00078, deep magenta #A00068.
+   Dark is the default. Light applies when the visitor's system is light or they pick it. */
+
+:root {
+  --bg: #061138;
+  --bg-soft: #0b1a4d;
+  --fg: #f5f1f8;
+  --muted: #aeb3d6;
+  --accent: #F00078;
+  --accent-ink: #ffffff;
+  --accent-text: #ff5fb4;
+  --line: rgba(255, 255, 255, 0.14);
+  --nav-bg: rgba(16, 26, 76, 0.62);
+  --blob-a: #A00068;
+  --blob-b: #200840;
+  --bubble-bg: #fdf1f8;
+  --bubble-fg: #0b1038;
+  --paper: #fdf7fb;
+  --paper-2: #f3e6ee;
+  --paper-ink: #0b1038;
+  --paper-muted: #5a5e86;
+  --paper-line: rgba(11, 16, 56, 0.14);
+  --chip-bg: #fbdfee;
+  --chip-fg: #7a0049;
+  --chip-bd: #f3b3d4;
+  --illus-bg: #f6e9f1;
+  --font-sans: var(--font-jakarta), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #fbf5f9;
+    --bg-soft: #f3e8f0;
+    --fg: #0b1038;
+    --muted: #4f5380;
+    --accent: #d4007a;
+    --accent-text: #b0005f;
+    --line: rgba(6, 17, 56, 0.16);
+    --nav-bg: rgba(255, 255, 255, 0.72);
+    --blob-a: #ffc2e1;
+    --blob-b: #d6d9ff;
+    --bubble-bg: #0b1038;
+    --bubble-fg: #fdf1f8;
+    --paper: #fffafc;
+    --paper-2: #f1e3ec;
+    color-scheme: light;
+  }
+}
+
+:root[data-theme="light"] {
+  --bg: #fbf5f9;
+  --bg-soft: #f3e8f0;
+  --fg: #0b1038;
+  --muted: #4f5380;
+  --accent: #d4007a;
+  --accent-text: #b0005f;
+  --line: rgba(6, 17, 56, 0.16);
+  --nav-bg: rgba(255, 255, 255, 0.72);
+  --blob-a: #ffc2e1;
+  --blob-b: #d6d9ff;
+  --bubble-bg: #0b1038;
+  --bubble-fg: #fdf1f8;
+  --paper: #fffafc;
+  --paper-2: #f1e3ec;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #061138;
+  --bg-soft: #0b1a4d;
+  --fg: #f5f1f8;
+  --muted: #aeb3d6;
+  --accent: #F00078;
+  --accent-text: #ff5fb4;
+  --line: rgba(255, 255, 255, 0.14);
+  --nav-bg: rgba(16, 26, 76, 0.62);
+  --blob-a: #A00068;
+  --blob-b: #200840;
+  --bubble-bg: #fdf1f8;
+  --bubble-fg: #0b1038;
+  --paper: #fdf7fb;
+  --paper-2: #f3e6ee;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  overflow-x: clip;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.lede {
+  color: var(--muted);
+  font-size: 17px;
+  max-width: 46ch;
+  margin: 0 0 20px;
+}
+
+/* Buttons used in the hero and contact sections */
+.btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--fg);
+}
+
+.btn.primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: transparent;
+}
+
+.btn:hover {
+  filter: brightness(1.08);
+}
+
+.btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
