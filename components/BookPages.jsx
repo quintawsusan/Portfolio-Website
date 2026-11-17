@@ -102,8 +102,6 @@ function ProjectCard({ project }) {
   );
 }
 
-// A book page has a fixed height. If its content is taller than the page (small
-// windows, long text) shrink the text a little until it fits, so nothing is cut off.
 function FitPage({ className = "", children, ...rest }) {
   const ref = useRef(null);
 
@@ -141,8 +139,7 @@ function ZoomImage({ src, alt, gallery }) {
   const [open, setOpen] = useState(false);
   const [i, setI] = useState(0);
 
-  // The lightbox shows the original full-size screenshots when we have them,
-  // otherwise the single image.
+
   const slides = gallery && gallery.length ? gallery : [{ src, label: alt }];
   const many = slides.length > 1;
 
@@ -268,12 +265,12 @@ const introText = {
     "It organizes students into serving batches, coordinates meal schedules and allows administrators to monitor serving activities, while students receive clear instructions on when to proceed to the cafeteria.",
   ],
   umucyo: [
-    "Umucyo is an IoT-enabled digital platform designed to digitize tea cooperative operations while promoting transparency and accountability between farmers and cooperatives. It connects farmers, field agents and cooperative administrators through integrated web and mobile applications, combining a custom-built IoT digital weighing device with a Progressive Web App (PWA) and backend infrastructure.",
+    "Umucyo is an IoT-enabled digital platform designed to digitize tea cooperative operations in Rwanda and keep farmers informed. It connects farmers, field agents and cooperative administrators through integrated web applications, combining a custom-built IoT digital weighing device with a Progressive Web App (PWA), Dashboard and backend infrastructure.",
     "The platform automates tea weight recording, simplifies tea delivery management, maintains digital operational records and sends SMS notifications to farmers, ensuring greater visibility into weighing results, deliveries and transactions while reducing manual processes and information gaps.",
   ],
   ham10000: [
-    "A deep-learning image classification project using EfficientNetB0 to classify dermatoscopic skin lesion images into seven categories: Actinic keratoses (akiec), Basal cell carcinoma (bcc), Benign keratosis-like lesions (bkl), Dermatofibroma (df), Melanoma (mel), Melanocytic nevi (nv), and Vascular lesions (vasc).",
-    "The project involved image preprocessing, model training and evaluation, and development of an interactive Streamlit application for image uploads and predictions.",
+    "A deep-learning image classification project using EfficientNetB0 to classify dermatoscopic skin lesion images into seven categories: Actinic keratoses (akiec), Basal cell carcinoma (bcc), Benign keratosis-like lesions (bkl), Dermatofibroma (df), Melanoma (mel), Melanocytic nevi (nv) and Vascular lesions (vasc).",
+    "The project involved image preprocessing, model training and evaluation and development of an interactive Streamlit application for image uploads and predictions.",
     "It is a student project, not a medical device, and the app says so clearly to anyone who uses it.",
   ],
 };
@@ -541,7 +538,7 @@ export const pages = [
     <h3>What's next?</h3>
 
     <p className="body">
-      Growth comes from being willing to start with what you do not know. If you
+      I'm interested in exploring new ideas and turning what I learn into things that work. If you
       would like to build something together, I'd love to hear from you.
     </p>
 

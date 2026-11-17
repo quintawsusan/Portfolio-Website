@@ -97,14 +97,13 @@ export default function Clive({ wave = false }) {
   );
 }
 
-export function MascotStage({ bubble, caption }) {
+export function MascotStage({ caption }) {
   return (
     <div className="mascot-stage">
       <div className="blob a" />
       <div className="blob b" />
-      <Clive wave />
-      <div className="bubble">{bubble}</div>
-      <div className="caption mono">{caption}</div>
+      <div className="clive-slot" data-clive-dock />
+      {caption && <div className="caption mono">{caption}</div>}
     </div>
   );
 }

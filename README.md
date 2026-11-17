@@ -1,38 +1,100 @@
-# Quinta Susan – Portfolio
+# My Portfolio Website
 
-Next.js (App Router, plain JavaScript/JSX) with a separate CSS file for each component.
+This website showcases my journey in software engineering, the projects I've worked on, the technologies I use and the ideas that continue to shape my growth as a developer.
 
-## Run it
+## Project Structure
+
+```text
+quinta-portfolio/
+│
+├── app/
+│   ├── globals.css       # Global application styles
+│   ├── layout.jsx        # Root layout for the application
+│   ├── page.jsx          # Main portfolio page
+│   └── page.css          # Main page styles
+│
+├── components/
+│   ├── Book.jsx          # Interactive desktop book
+│   ├── Book.css          # Desktop book styles
+│   ├── BookPages.jsx     # Portfolio book pages and project content
+│   ├── MobileBook.jsx    # Mobile book experience
+│   ├── MobileBook.css    # Mobile book styles
+│   ├── Clive.jsx         # Character component
+│   ├── Clive.css         # Character styles
+│   ├── FollowClive.jsx   # Character's guidance and messages
+│   ├── FollowClive.css   # Guidance component styles
+│   ├── Hero.jsx          # Hero section
+│   ├── Hero.css          # Hero section styles
+│   ├── Nav.jsx           # Navigation component
+│   ├── Nav.css           # Navigation styles
+│   ├── Contact.jsx       # Contact section
+│   └── Contact.css       # Contact section styles
+│
+├── data/
+│   └── content.js        # Portfolio content and navigation data
+│
+├── lib/
+│   └── bookNav.js        # Book navigation and communication events
+│
+├── public/               # Static assets
+│
+├── eslint.config.mjs     # ESLint configuration
+├── jsconfig.json         # JavaScript project configuration
+├── next.config.mjs       # Next.js configuration
+├── package.json          # Project dependencies and scripts
+├── package-lock.json     # Dependency lockfile
+├── README.md             # Project documentation
+└── AGENTS.md             # Project-specific agent instructions
+```
+## Tech Stack
+
+- **Frontend:** Next.js, React, JavaScript
+- **Styling:** CSS
+- **Icons:** Lucide React
+- **Development Tools:** Git, GitHub, VS Code
+
+## Getting Started
+
+To run the project locally:
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/YOUR-GITHUB-USERNAME/my-portfolio-website.git
+```
+
+### 2. Navigate into the project
+
+```bash
+cd my-portfolio-website
+```
+
+### 3. Install dependencies
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
-npm run build && npm start
 ```
 
-Needs Node 20 or newer. Fonts (Plus Jakarta Sans, JetBrains Mono) load through `next/font/google`, so the first build needs internet.
+### 4. Start the development server
 
-## Where things are
+```bash
+npm run dev
+```
 
-| File | What it does |
-| --- | --- |
-| `data/content.js` | **All the words.** Edit this to change text, skills, projects, links. |
-| `app/layout.jsx` | Fonts, page title, light/dark theme script |
-| `app/globals.css` | Colours (design tokens), reset, buttons |
-| `app/page.jsx` + `app/page.css` | The page and its footer |
-| `components/Nav.jsx` + `.css` | Floating pill nav and theme toggle |
-| `components/Hero.jsx` + `.css` | Hero section |
-| `components/Clive.jsx` + `.css` | The mascot, speech bubbles, mascot stage |
-| `components/Book.jsx` + `.css` | Scroll-driven book: cover, page turns, controls |
-| `components/BookPages.jsx` | The ten pages of the book |
-| `components/Contact.jsx` + `.css` | Contact section |
-| `lib/bookNav.js` | Lets the nav and hero jump to a page in the book |
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Change the colours
+## Run a Production Build
 
-Edit the variables at the top of `app/globals.css`. Dark values are in `:root`, light values are in the two light blocks below it.
+To create an optimized production build:
 
-## Notes
+```bash
+npm run build
+```
 
-- Below 900px wide (or with "reduce motion" on) the book becomes a stack of page cards instead of animating.
-- The "Illustrative graphic" drawings on the projects page are placeholders. Swap them in `BookPages.jsx` for real screenshots when you have them.
+To run the production version locally:
+
+```bash
+npm run start
+```
+
+*Built with curiosity, creativity and a passion for technology.*

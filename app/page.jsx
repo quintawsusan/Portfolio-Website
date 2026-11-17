@@ -5,12 +5,15 @@ import Hero from "../components/Hero";
 import Book from "../components/Book";
 import Contact from "../components/Contact";
 import "./page.css";
+import FollowClive from "../components/FollowClive";
 
 export default function Home() {
   return (
     <>
       <CliveDefs />
+      <FollowClive />
       <Nav />
+
       <main id="top">
         <Hero />
         <Book />

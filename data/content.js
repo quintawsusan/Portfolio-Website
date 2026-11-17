@@ -5,7 +5,7 @@ export const profile = {
   location: "Nairobi, Kenya",
 
   summary:
-    "I enjoy digging beneath the surface, understanding why things work the way they do, and finding better ways to approach challenges. I see software engineering as more than writing code; it's about thinking critically, questioning assumptions and turning ideas into well-thought-out solutions.",
+    "I enjoy digging beneath the surface, understanding why things work the way they do and finding better ways to approach challenges. I see software engineering as more than writing code; it's about thinking critically, questioning assumptions and turning ideas into well thought out solutions.",
 
   email: "quintawsusan@gmail.com",
 
@@ -33,7 +33,7 @@ export const skillGroups = [
   },
   {
     label: "Backend",
-    items: ["Python", "FastAPI", "SQLAlchemy", "REST APIs", "Authentication"],
+    items: ["Python", "FastAPI", "SQLAlchemy", "REST APIs"],
   },
   {
     label: "Mobile",
@@ -93,17 +93,17 @@ export const projects = [
       "Researched how graduates consume educational content online and where the move from social-media learning to structured skills breaks down.",
       "Designed responsive interfaces and app flows in Figma for onboarding, learning, assessment and progress.",
       "Built FastAPI REST APIs for authentication, onboarding, content pathways, assessments, progress and recommendations.",
-      "Built Flutter screens in Dart for onboarding, learning content, assessments and progress.",
-      "Integrated Google Gemini to generate personalized assessments and learning experiences.",
+      "Built Flutter screens in Dart for onboarding, learning content, assessments, progress and opportunities.",
+      "Integrated Google Gemini to generate personalized assessments, learning experiences and opportunity recommendations.",
       "Modeled data in PostgreSQL with SQLAlchemy, tested APIs in Postman and tracked tasks in Jira.",
-      "Integrated the YouTube Data API and Google Serper API for videos and career and learning opportunities.",
+      "Integrated the YouTube Data API and Google Serper API for learning content and career and opportunity discovery.",
     ],
   },
   {
     id: "umucyo",
     name: "Umucyo",
     summary:
-      "An IoT-enabled digital platform that digitizes tea cooperative operations and keeps farmers informed.",
+      "An IoT-enabled digital platform that digitizes tea cooperative operations in Rwanda and keeps farmers informed.",
     lead: "IoT and web platform for tea cooperatives.",
     tags: ["IoT", "Web + PWA"],
     stack: [
@@ -115,8 +115,8 @@ export const projects = [
           "FastAPI",
           "PostgreSQL",
           "SQLAlchemy",
-          "Alembic",
           "REST APIs",
+          "Flutter Wave",
         ],
       },
       {
@@ -199,12 +199,12 @@ export const guide = {
   cover: "Keep scrolling and I'll open the book for you.",
   static: "Scroll down and I'll walk you through each page.",
   spreads: [
-    "That's Quinta, a Software Engineer.",
-    "Here's how Quinta thinks.",
-    "Here's how Quinta approaches her work.",
-    "Let's explore Vuka and how it works.",
-    "Let's explore Umucyo and how it works to bring transparency between tea cooperatives and tea farmers.",
-    "Here's another project Quinta has built.",
+    "Let's start with who Quinta is and what drives her.",
+    "Here's how Quinta thinks and her technical skills.",
+    "Here is how Quinta approaches problems and keeps learning.",
+    "Let's begin with Vuka, a career and learning platform.",
+    "Now let's explore Umucyo, an IoT-enabled tea cooperative platform.",
+    "Meal Q is another project Quinta has built.",
     "Quinta has explored machine learning too.",
     "Thanks for reading!",
   ],

@@ -1,12 +1,12 @@
-
 "use client";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { guide, profile } from "../data/content";
-import { BOOK_GO_EVENT } from "../lib/bookNav";
-import Clive from "./Clive";
+import { BOOK_GO_EVENT, setBookMessage } from "../lib/bookNav";
 import { pages } from "./BookPages";
 import "./Book.css";
+import MobileBook from "./MobileBook";
 
 const SPREADS = 8;
 const RISE_END = 0.14;
@@ -16,7 +16,8 @@ const SPREAD_START = 0.25;
 const SPREAD_LEN = (1 - SPREAD_START) / SPREADS;
 const CLOSE_START = 0.94;
 const FLIP_MS = 640;
-const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+const clamp = (v, a, b) => Math.max(a, Math.min(v, b));
 
 export default function Book() {
   const trackRef = useRef(null);
@@ -30,67 +31,92 @@ export default function Book() {
   const staticRef = useRef(false);
   const flipRef = useRef(null);
   const settleRef = useRef(0);
-  const viewRef = useRef(-1);
+
   const [view, setView] = useState(-1);
   const [shown, setShown] = useState(0);
   const [target, setTarget] = useState(0);
   const [flip, setFlip] = useState(null);
 
   flipRef.current = flip;
-  viewRef.current = view;
+
+  useEffect(() => {
+    const message =
+      view < 0
+        ? guide.cover
+        : guide.spreads[view] ?? guide.static;
+
+    setBookMessage(message);
+  }, [view]);
 
   const update = useCallback(() => {
     rafRef.current = 0;
 
     const track = trackRef.current;
+
     if (!track || staticRef.current) return;
 
-    const top = track.getBoundingClientRect().top + window.scrollY;
-    const len = Math.max(1, track.offsetHeight - window.innerHeight);
-    const p = clamp((window.scrollY - top) / len, 0, 1);
+    const top =
+      track.getBoundingClientRect().top + window.scrollY;
+
+    const len = Math.max(
+      1,
+      track.offsetHeight - window.innerHeight,
+    );
+
+    const p = clamp(
+      (window.scrollY - top) / len,
+      0,
+      1,
+    );
 
     const k = clamp(p / RISE_END, 0, 1);
     const e = 1 - Math.pow(1 - k, 3);
-
-    const t = clamp((p - OPEN_START) / OPEN_LEN, 0, 1);
+    const t = clamp(
+      (p - OPEN_START) / OPEN_LEN,
+      0,
+      1,
+    );
     const te = t * t * (3 - 2 * t);
-
-    // Closing animation
     const closeT = clamp(
       (p - CLOSE_START) / (1 - CLOSE_START),
       0,
-      1
+      1,
     );
-    const close = closeT * closeT * (3 - 2 * closeT);
 
+    const close = closeT * closeT * (3 - 2 * closeT);
     const finalOpen = 1 - close;
     const finalRise = e * finalOpen;
     const finalTurn = te * finalOpen;
-
     const y = (1 - finalRise) * 60;
     const rx = (1 - finalRise) * 26;
     const s = 0.82 + 0.18 * finalRise;
 
-    bookRef.current.style.transform =
-      `translate3d(${(-25 * (1 - finalTurn)).toFixed(2)}%,${y.toFixed(1)}px,0) ` +
-      `rotateX(${rx.toFixed(2)}deg) rotateY(${(-9 * (1 - finalTurn)).toFixed(2)}deg) scale(${s.toFixed(3)})`;
+    if (bookRef.current) {
+      bookRef.current.style.transform =
+        `translate3d(${(-25 * (1 - finalTurn)).toFixed(2)}%,${y.toFixed(1)}px,0) ` +
+        `rotateX(${rx.toFixed(2)}deg) rotateY(${(-9 * (1 - finalTurn)).toFixed(2)}deg) scale(${s.toFixed(3)})`;
+    }
 
-    coverRef.current.style.transform =
-      `rotateY(${(-180 * finalTurn).toFixed(2)}deg)`;
+    if (coverRef.current) {
+      coverRef.current.style.transform =
+        `rotateY(${(-180 * finalTurn).toFixed(2)}deg)`;
 
-    coverRef.current.style.pointerEvents =
-      finalTurn > 0.5 ? "none" : "auto";
+      coverRef.current.style.pointerEvents =
+        finalTurn > 0.5 ? "none" : "auto";
+    }
 
-    spreadRef.current.style.opacity =
-      String(
+    if (spreadRef.current) {
+      spreadRef.current.style.opacity = String(
         Math.min(
           clamp((te - 0.35) / 0.4, 0, 1),
-          1 - close
-        )
+          1 - close,
+        ),
       );
+    }
 
     if (te < 0.5) {
       clearTimeout(settleRef.current);
+
       setView(-1);
       setTarget(0);
 
@@ -103,16 +129,13 @@ export default function Book() {
           ? clamp(
               Math.floor((p - SPREAD_START) / SPREAD_LEN),
               0,
-              SPREADS - 1
+              SPREADS - 1,
             )
           : 0;
 
       setView(idx);
-
-      // Wait for the scroll to settle so a fast scroll makes ONE flip to the
-      // final spread instead of flipping through every spread on the way.
       clearTimeout(settleRef.current);
-      settleRef.current = setTimeout(() => setTarget(idx), 140);
+      setTarget(idx);
     }
   }, []);
 
@@ -124,9 +147,12 @@ export default function Book() {
 
   const go = useCallback((k) => {
     const track = trackRef.current;
+
     if (!track) return;
 
-    const smooth = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const smooth = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches
       ? "auto"
       : "smooth";
 
@@ -134,11 +160,16 @@ export default function Book() {
       const el =
         k < 0
           ? guideRef.current
-          : document.querySelector(`[data-static-page="${2 * k}"]`);
+          : document.querySelector(
+              `[data-static-page="${2 * k}"]`,
+            );
 
       if (el) {
         window.scrollTo({
-          top: el.getBoundingClientRect().top + window.scrollY - 90,
+          top:
+            el.getBoundingClientRect().top +
+            window.scrollY -
+            90,
           behavior: smooth,
         });
       }
@@ -146,10 +177,18 @@ export default function Book() {
       return;
     }
 
-    const top = track.getBoundingClientRect().top + window.scrollY;
-    const len = Math.max(1, track.offsetHeight - window.innerHeight);
+    const top =
+      track.getBoundingClientRect().top + window.scrollY;
 
-    const f = k < 0 ? 0.16 : SPREAD_START + SPREAD_LEN * (k + 0.5);
+    const len = Math.max(
+      1,
+      track.offsetHeight - window.innerHeight,
+    );
+
+    const f =
+      k < 0
+        ? 0.16
+        : SPREAD_START + SPREAD_LEN * (k + 0.5);
 
     window.scrollTo({
       top: top + f * len,
@@ -174,9 +213,13 @@ export default function Book() {
 
     const onJump = (e) => go(e.detail);
 
-    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("scroll", schedule, {
+      passive: true,
+    });
+
     window.addEventListener("resize", schedule);
     window.addEventListener(BOOK_GO_EVENT, onJump);
+
     mq.addEventListener("change", onMode);
 
     update();
@@ -185,6 +228,7 @@ export default function Book() {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
       window.removeEventListener(BOOK_GO_EVENT, onJump);
+
       mq.removeEventListener("change", onMode);
 
       clearTimeout(settleRef.current);
@@ -218,9 +262,12 @@ export default function Book() {
 
       void el.offsetWidth;
 
-      el.style.transition = `transform ${FLIP_MS - 40}ms cubic-bezier(.5,.05,.2,1)`;
+      el.style.transition =
+        `transform ${FLIP_MS - 40}ms cubic-bezier(.5,.05,.2,1)`;
 
-      el.style.transform = flip.fwd ? "rotateY(-180deg)" : "rotateY(180deg)";
+      el.style.transform = flip.fwd
+        ? "rotateY(-180deg)"
+        : "rotateY(180deg)";
     }
 
     const timer = setTimeout(() => {
@@ -252,8 +299,6 @@ export default function Book() {
         ? "The end"
         : `Pages ${2 * view + 1} to ${2 * view + 2} of 16`;
 
-  const message = view < 0 ? guide.cover : guide.spreads[view];
-
   return (
     <section
       className="book-track"
@@ -265,17 +310,26 @@ export default function Book() {
         <div className="book-wrap" ref={wrapRef}>
           <div className="book" ref={bookRef}>
             <div className="spread" ref={spreadRef}>
-              <div className="half left">{pages[left]}</div>
-              <div className="half right">{pages[right]}</div>
+              <div className="half left">
+                {pages[left]}
+              </div>
+
+              <div className="half right">
+                {pages[right]}
+              </div>
 
               {flip && (
                 <div
                   className={`leaf ${flip.fwd ? "fwd" : "bwd"}`}
                   ref={leafRef}
                 >
-                  <div className="face front half">{pages[front]}</div>
+                  <div className="face front half">
+                    {pages[front]}
+                  </div>
 
-                  <div className="face back half">{pages[back]}</div>
+                  <div className="face back half">
+                    {pages[back]}
+                  </div>
                 </div>
               )}
             </div>
@@ -287,20 +341,24 @@ export default function Book() {
                 <div className="dots" />
 
                 <h2>{profile.name}</h2>
-                <div className="sub">Software Engineer</div>
-                <p className="sub">My Journey</p>
+
+                <div className="sub">
+                  Software Engineer
+                </div>
+
+                <p className="sub">
+                  My Journey
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="guide" ref={guideRef}>
-          <div className="bubble bubble-anim">{message}</div>
-
-          <div className="bubble bubble-static">{guide.static}</div>
-
-          <Clive />
-        </div>
+        <div
+          className="guide"
+          ref={guideRef}
+          aria-hidden="true"
+        />
 
         <div className="controls">
           <button
@@ -310,25 +368,47 @@ export default function Book() {
             disabled={view < 0}
             onClick={() => go(view <= 0 ? -1 : view - 1)}
           >
-            <ChevronLeft size={16} strokeWidth={2} aria-hidden="true" />
+            <ChevronLeft
+              size={16}
+              strokeWidth={2}
+              aria-hidden="true"
+            />
           </button>
 
-          <span className="counter mono">{counter}</span>
+          <span className="counter mono">
+            {counter}
+          </span>
 
           <button
             className="arrow"
             type="button"
             aria-label="Next page"
             disabled={view === SPREADS - 1}
-            onClick={() => go(view < 0 ? 0 : Math.min(SPREADS - 1, view + 1))}
+            onClick={() =>
+              go(
+                view < 0
+                  ? 0
+                  : Math.min(SPREADS - 1, view + 1),
+              )
+            }
           >
-            <ChevronRight size={16} strokeWidth={2} aria-hidden="true" />
+            <ChevronRight
+              size={16}
+              strokeWidth={2}
+              aria-hidden="true"
+            />
           </button>
         </div>
 
+        <MobileBook />
+
         <div className="pages-static">
           {pages.map((page, i) => (
-            <div className="static-page" data-static-page={i} key={i}>
+            <div
+              className="static-page"
+              data-static-page={i}
+              key={i}
+            >
               {page}
             </div>
           ))}

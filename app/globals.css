@@ -1,7 +1,3 @@
-/* Design tokens, reset and shared primitives.
-   Palette comes from the Flock image: navy #061138, magenta #F00078, deep magenta #A00068.
-   Dark is the default. Light applies when the visitor's system is light or they pick it. */
-
 :root {
   --bg: #061138;
   --bg-soft: #0b1a4d;

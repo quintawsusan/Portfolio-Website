@@ -22,7 +22,6 @@ export const metadata = {
     "Quinta Susan is a software engineer in Nairobi, Kenya. Open her little book to see her projects, skills and journey.",
 };
 
-// Applies a saved light/dark choice before the first paint so the page never flashes.
 const themeScript = `try{var t=localStorage.getItem('qs-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}`;
 
 export default function RootLayout({ children }) {
