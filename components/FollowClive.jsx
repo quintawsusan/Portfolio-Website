@@ -24,9 +24,9 @@ const CONTACT = (
   <>
     <span className="fc-line">Got an idea in mind?</span>
     <span className="fc-line">
-      Quinta would love to build something great with you. Drop her a message
-      below!
+      Quinta would love to build something great with you.
     </span>
+    <span className="fc-line">Drop her a message.</span>
   </>
 );
 

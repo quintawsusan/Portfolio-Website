@@ -16,7 +16,7 @@ export default function Hero() {
           </p>
 
           <h1>
-            Hi, I'm <em>{profile.name}</em>
+            Hello, I'm <em>{profile.name}</em>
           </h1>
 
           <p className="tagline">{profile.title}</p>

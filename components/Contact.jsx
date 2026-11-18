@@ -123,7 +123,7 @@ export default function Contact() {
               <span className="bubble-line">Got an idea in mind?</span>
               <span className="bubble-line">
                 Quinta would love to build something great with you. Drop her a
-                message below!
+                message.
               </span>
             </>
           }
