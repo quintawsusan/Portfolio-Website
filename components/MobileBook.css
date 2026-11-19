@@ -135,6 +135,7 @@
 }
 
 .mbook-spread {
+  perspective: 1400px;
   position: absolute;
   inset: 0;
   display: flex;
@@ -143,6 +144,31 @@
   border-radius: 3px 8px 8px 3px;
   background: var(--paper);
   animation: mbook-spread-arrive 0.24s ease-out;
+}
+
+.mbook-front-sheet,
+.mbook-page {
+  cursor: pointer;
+}
+
+.mbook-spread.turn-next .mbook-page-right {
+  transform-origin: left center;
+  animation: mbook-turn-next 0.42s cubic-bezier(.4,.05,.2,1);
+}
+
+.mbook-spread.turn-prev .mbook-page-left {
+  transform-origin: right center;
+  animation: mbook-turn-prev 0.42s cubic-bezier(.4,.05,.2,1);
+}
+
+@keyframes mbook-turn-next {
+  from { transform: rotateY(-95deg); filter: brightness(0.82); }
+  to { transform: rotateY(0); filter: none; }
+}
+
+@keyframes mbook-turn-prev {
+  from { transform: rotateY(95deg); filter: brightness(0.82); }
+  to { transform: rotateY(0); filter: none; }
 }
 
 @keyframes mbook-spread-arrive {
@@ -276,23 +302,6 @@
   padding: 0.25em 0.4em;
 }
 
-.mbook-tap {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 22px;
-  z-index: 6;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  touch-action: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.mbook-tap.prev { left: 0; }
-.mbook-tap.next { right: 0; }
-
 .mbook-controls {
   display: flex;
   align-items: center;
@@ -382,5 +391,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mbook-spread { animation: none; }
+  .mbook-spread,
+  .mbook-spread .mbook-page { animation: none !important; }
 }

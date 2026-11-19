@@ -19,6 +19,18 @@ const FLIP_MS = 640;
 
 const clamp = (v, a, b) => Math.max(a, Math.min(v, b));
 
+const NO_TURN =
+  "a,button,input,textarea,select,summary,label,.toc li,.lightbox,[data-no-turn]";
+
+function ignoreTap(e) {
+  if (!e.currentTarget.contains(e.target)) return true;
+  if (e.target.closest?.(NO_TURN)) return true;
+
+  const sel = window.getSelection?.();
+
+  return Boolean(sel && !sel.isCollapsed && sel.toString().trim());
+}
+
 export default function Book() {
   const trackRef = useRef(null);
   const wrapRef = useRef(null);
@@ -278,6 +290,26 @@ export default function Book() {
     return () => clearTimeout(timer);
   }, [flip]);
 
+  const canPrev = view >= 0;
+  const canNext = view >= 0 && view < SPREADS - 1;
+
+  // Tap the left page to turn back, the right page to turn forward,
+  // the closed cover to open the book.
+  const tapPrev = (e) => {
+    if (!canPrev || ignoreTap(e)) return;
+    go(view === 0 ? -1 : view - 1);
+  };
+
+  const tapNext = (e) => {
+    if (!canNext || ignoreTap(e)) return;
+    go(view + 1);
+  };
+
+  const tapCover = (e) => {
+    if (view >= 0 || ignoreTap(e)) return;
+    go(0);
+  };
+
   let left = 2 * shown;
   let right = 2 * shown + 1;
   let front = 0;
@@ -310,11 +342,17 @@ export default function Book() {
         <div className="book-wrap" ref={wrapRef}>
           <div className="book" ref={bookRef}>
             <div className="spread" ref={spreadRef}>
-              <div className="half left">
+              <div
+                className={`half left${canPrev ? " turnable" : ""}`}
+                onClick={tapPrev}
+              >
                 {pages[left]}
               </div>
 
-              <div className="half right">
+              <div
+                className={`half right${canNext ? " turnable" : ""}`}
+                onClick={tapNext}
+              >
                 {pages[right]}
               </div>
 
@@ -334,7 +372,12 @@ export default function Book() {
               )}
             </div>
 
-            <div className="cover" ref={coverRef}>
+            <div
+              className="cover"
+              ref={coverRef}
+              onClick={tapCover}
+              title="Tap to open the book"
+            >
               <div className="frame" />
 
               <div className="cover-in">
@@ -399,6 +442,11 @@ export default function Book() {
             />
           </button>
         </div>
+
+        <p className="book-hint">
+          Scroll or tap a page to turn it or use the arrows above.
+        </p>
+
 
         <MobileBook />
 

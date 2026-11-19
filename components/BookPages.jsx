@@ -139,7 +139,6 @@ function ZoomImage({ src, alt, gallery }) {
   const [open, setOpen] = useState(false);
   const [i, setI] = useState(0);
 
-
   const slides = gallery && gallery.length ? gallery : [{ src, label: alt }];
   const many = slides.length > 1;
 
@@ -315,7 +314,9 @@ function ProjectIntroduction({ project, number, kicker }) {
 
 function ProjectContributions({ project, number, kicker }) {
   return (
-    <FitPage className={`project-contributions-page ${project.id}-contributions-page`}>
+    <FitPage
+      className={`project-contributions-page ${project.id}-contributions-page`}
+    >
       <div className="kicker">{kicker}</div>
 
       <p className="lead">My contributions to {project.name}</p>
@@ -383,10 +384,6 @@ export const pages = [
       ))}
     </ol>
 
-    <p className="hintline">
-      Scroll to turn the pages or use the arrows below the book.
-    </p>
-
     <div className="pn">1</div>
   </FitPage>,
 
@@ -432,7 +429,6 @@ export const pages = [
   </article>,
 
   <article className="page skills-page" key="p4">
-
     <div className="kicker">Chapter 03</div>
     <h3>Technical skills</h3>
 
@@ -538,8 +534,9 @@ export const pages = [
     <h3>What's next?</h3>
 
     <p className="body">
-      I'm interested in exploring new ideas and turning what I learn into things that work. If you
-      would like to build something together, I'd love to hear from you.
+      I'm interested in exploring new ideas and turning what I learn into things
+      that work. If you would like to build something together, I'd love to hear
+      from you.
     </p>
 
     <a className="next-link" href="#contact">

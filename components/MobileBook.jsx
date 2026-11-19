@@ -13,6 +13,10 @@ const OPEN_START = 0.14;
 const PAGE_RANGE = 0.76;
 const SWIPE_MIN = 48;
 
+const TAP_MAX = 10;
+const NO_TURN =
+  "a,button,input,textarea,select,summary,label,.toc li,.lightbox,[data-no-turn]";
+
 const clamp = (value, min, max) =>
   Math.max(min, Math.min(value, max));
 
@@ -21,6 +25,8 @@ export default function MobileBook() {
   const [closedAtEnd, setClosedAtEnd] = useState(false);
   const start = useRef(null);
   const spreadRef = useRef(-1);
+  const dragged = useRef(false);
+  const [dir, setDir] = useState("next");
   const syncFromScroll = useCallback(() => {
     const section = document.getElementById("story");
     if (!section) return;
@@ -48,6 +54,7 @@ export default function MobileBook() {
     }
 
     if (nextSpread !== spreadRef.current) {
+      setDir(nextSpread > spreadRef.current ? "next" : "prev");
       spreadRef.current = nextSpread;
       setSpread(nextSpread);
     }
@@ -119,6 +126,7 @@ export default function MobileBook() {
     goTo(Math.max(-1, spread - 1));
 
   const onPointerDown = (event) => {
+    dragged.current = false;
     start.current = {
       x: event.clientX,
       y: event.clientY,
@@ -132,6 +140,9 @@ export default function MobileBook() {
 
     const dx = event.clientX - point.x;
     const dy = event.clientY - point.y;
+
+    dragged.current =
+      Math.abs(dx) > TAP_MAX || Math.abs(dy) > TAP_MAX;
 
     if (
       Math.abs(dx) >= SWIPE_MIN &&
@@ -171,6 +182,33 @@ export default function MobileBook() {
     }
   };
 
+  const onTap = (event) => {
+    if (dragged.current) {
+      dragged.current = false;
+      return;
+    }
+
+    if (
+      !event.currentTarget.contains(event.target) ||
+      event.target.closest?.(NO_TURN)
+    ) {
+      return;
+    }
+
+    const sel = window.getSelection?.();
+    if (sel && !sel.isCollapsed && sel.toString().trim()) return;
+
+    if (closedAtEnd) {
+      goTo(TOTAL_SPREADS - 1);
+    } else if (spread < 0) {
+      goTo(0);
+    } else if (event.target.closest?.(".mbook-page-left")) {
+      prev();
+    } else {
+      next();
+    }
+  };
+
   const leftPage = spread < 0 ? null : spread * 2;
   const rightPage =
     spread < 0 ? null : Math.min(spread * 2 + 1, TOTAL_PAGES - 1);
@@ -201,13 +239,17 @@ export default function MobileBook() {
           }}
           onWheel={onWheel}
           onClickCapture={onClickCapture}
+          onClick={onTap}
         >
           {spread < 0 ? (
             <div className="mbook-front-sheet" key="cover">
               {renderCover()}
             </div>
           ) : (
-            <div className="mbook-spread" key={`spread-${spread}`}>
+            <div
+              className={`mbook-spread turn-${dir}`}
+              key={`spread-${spread}`}
+            >
               <div className="mbook-page mbook-page-left">
                 {pages[leftPage]}
               </div>
@@ -216,24 +258,6 @@ export default function MobileBook() {
               </div>
             </div>
           )}
-
-          <button
-            type="button"
-            className="mbook-tap prev"
-            aria-label="Previous spread"
-            tabIndex={-1}
-            onClick={prev}
-            disabled={spread === -1 && !closedAtEnd}
-          />
-
-          <button
-            type="button"
-            className="mbook-tap next"
-            aria-label="Next spread"
-            tabIndex={-1}
-            onClick={next}
-            disabled={spread === TOTAL_SPREADS - 1}
-          />
         </div>
       </div>
 
@@ -260,7 +284,7 @@ export default function MobileBook() {
           type="button"
           className="mbook-arrow"
           aria-label="Next spread"
-          onClick={next}
+          onClick={closedAtEnd ? () => goTo(TOTAL_SPREADS - 1) : next}
           disabled={spread === TOTAL_SPREADS - 1}
         >
           <ChevronRight size={18} aria-hidden="true" />
@@ -268,7 +292,7 @@ export default function MobileBook() {
       </div>
 
       <p className="mbook-hint">
-        Scroll to turn the spreads · Swipe or use the arrows to navigate
+        Scroll, swipe, or tap a page to turn it
       </p>
     </div>
   );
